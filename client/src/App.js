@@ -8,6 +8,11 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import {withStyles} from '@material-ui/core/styles'
 import  Paper from '@material-ui/core/Paper'
+import React,{useState, useEffect} from 'react'
+import Axios from 'axios'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
+
 const styles = theme =>({
   root: {
     width : '100%',
@@ -17,36 +22,88 @@ const styles = theme =>({
   },
   table:{
     minWidth:1080
+  },
+  progress:{
+    margin : theme.spacing(2)
   }
 })
 
-const customer = [{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '홍길동',
-  'birthday': '1999.01.01',
-  'gender': '남자',
-  'job': '대학생'
-}, {
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/2',
-  'name': '홍길순',
-  'birthday': '1980.01.02',
-  'gender': '여자',
-  'job': '학생'
-}, {
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '홍길돌',
-  'birthday': '1992.01.03',
-  'gender': '남자',
-  'job': '프로그래머'
-}]
 
 function App() {
 
+  // state = {
+  //   customers : ""
+  // }
+
+  // componentDidMount() 
+  //   {
+  //     this.callApi()
+  //     .then(res => this.setState({customers : res}))
+  //     .catch(err => console.log(err))
+  
+  //   }
+  
+
+  // callApi() = async () => {
+  //   const response = await fetch('/api/customers')
+  //   const body = await response.json();
+  //   return body;
+
+  // }
+
+  const customer = []
+
+  // const [customers, setCustomers] = useState("")
+  // const [completed, setcompleted] = useState(0)
+
+  
+  // useEffect(() => {
+
+  //   Axios.get('/api/customers')
+  //   .then(response =>{
+  //     if(response.data.success){
+  //       console.log(response.data)
+  //       setCustomers(response.data)
+  //     }else{
+  //       alert(response.data)
+  //     }
+      
+  //   })
+   
+  // }, [])
+
+  const [customers, setCustomers] = useState("");
+  const [completed, setCompleted] = useState(0);
+  const [isLoad, setIsLoad] = useState(false);
+  
+  useEffect(() => {
+    let complete = 0;
+    let timer =  (() => {
+      if (complete >= 100) {
+        complete = 0
+      } else {
+        complete += 1;
+      }
+      setCompleted(complete);
+      if (isLoad) {
+        clearInterval(timer);
+      }
+    }, 20);
+    callApi().then(res => {
+      setCustomers(res);
+    }).
+      catch(err => console.log(err));
+  }, [isLoad]);
+
+  const callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    setIsLoad(true);
+    return body;
+  }
+
   return (
-    
+
     <Paper className={styles.root}>
       <Table className={styles.table}>
         <TableHead>
@@ -63,7 +120,8 @@ function App() {
         <TableBody>
 
 
-          {customer.map(c => {
+          {customers!=0 ?
+           customers.map(c => {
             return (
 
 
@@ -76,16 +134,15 @@ function App() {
                 gender={c.gender}
                 job={c.job}
               />
-
-
-
-
-
-
             )
+          }) :
+         <TableRow>
+           <TableCell colSpan="6" align="center">
+             <CircularProgress className={styles.progress} variant="determinate" value = {completed} />
 
-          })
-          }
+           </TableCell>
+         </TableRow>
+         }
         </TableBody>
       </Table>
       </Paper>
