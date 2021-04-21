@@ -39,6 +39,7 @@ function App() {
   const [customers, setCustomers] = useState("");
   const [completed, setCompleted] = useState(0);
   const [isLoad, setIsLoad] = useState(false);
+ 
 
   useEffect(() => {
     let complete = 0;
@@ -54,6 +55,8 @@ function App() {
       }
     }, 20);
 
+
+      
     callApi().then(res => {
       setCustomers(res);
     }).
@@ -66,6 +69,15 @@ function App() {
     setIsLoad(true);
     return body;
   }
+
+
+  // 새로고침...... axios...로 해버리기^^...
+  const stateRefresh = async() =>{
+    const result = await Axios.get('./api/customers')
+    setCustomers(result.data);
+    
+  }
+ 
 
   return (
     <div>
@@ -111,7 +123,7 @@ function App() {
           </TableBody>
         </Table>
       </Paper>
-      <CustomerAdd />
+      <CustomerAdd stateRefresh={stateRefresh}/>
     </div>
 
 
