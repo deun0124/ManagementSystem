@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import Axios,{post} from 'axios'
 import { Typography, Button, Form, message, Input, Icon} from 'antd';
 
+
 function CustomerAdd() {
 
     const [info, setInfo] = useState([{
@@ -13,6 +14,8 @@ function CustomerAdd() {
         fileName:""
 
     }])
+
+    const {file, userName, birthday, gender, job, fileName} = info;
   
    function addCustomer() {
         const url = '/api/customers'
@@ -32,10 +35,20 @@ function CustomerAdd() {
   
    const handleFormSubmit=(e)=>{
         e.preventDefault()
-        this.addCustomer()
+        addCustomer()
         .then((response) => {
             console.log(response.data)
         })
+        setInfo({
+            file: null,
+            userName:'',
+            birthday : '',
+            gender : ''
+            ,job : '',
+            fileName :''
+        })
+        
+      
     }
 
     const handleFileChange =(e)=>{
@@ -47,24 +60,25 @@ function CustomerAdd() {
     }
 
     const handleValueChange=(e)=>{
-        let nextState={
 
-        }
-        nextState[e.target.name] =  e.target.value
-        setInfo(nextState)
+        const { name, value} = e.target;
+        setInfo({
+            ...info,
+            [name] : value
+        })
     }
     return (
         <div>
-            <Form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit}>
                 <h1>고객 추가</h1>
-                프로필 이미지 : <Input type="file" name="file" file={info.file} value={info.fileName} onChange={handleFileChange} /><br />
-                이름 : <Input type="text" name="userName" value={info.userName} onChange={handleValueChange}   /><br />
-                생년월일 : <Input type="text" name="birthday" value={info.birthday} onChange={handleValueChange} /><br />
-                성별 : <Input type="text" name ="gender" value={info.gender} onChange={handleValueChange} /><br />
-                직업 : <Input type="text" name ="job" value={info.gob} onChange={handleValueChange} /><br />
-                <Button type="submit">입력하기</Button>
+                프로필 이미지 : <Input type="file" name="file" file={file} value={fileName} onChange={handleFileChange} /><br />
+                이름 : <Input type="text" name="userName" value={userName} onChange={handleValueChange}   /><br />
+                생년월일 : <Input type="text" name="birthday" value={birthday} onChange={handleValueChange} /><br />
+                성별 : <Input type="text" name ="gender" value={gender} onChange={handleValueChange} /><br />
+                직업 : <Input type="text" name ="job" value={job} onChange={handleValueChange} /><br />
+                <Button type="submit" onClick={handleFormSubmit}>입력하기</Button>
             
-            </Form>
+            </form>
         </div>
     )
 }
