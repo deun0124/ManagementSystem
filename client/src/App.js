@@ -91,6 +91,8 @@ function App() {
               <TableCell>생년월일</TableCell>
               <TableCell>성별</TableCell>
               <TableCell>직업</TableCell>
+              <TableCell>설정</TableCell>
+              
             </TableRow>
           </TableHead>
 
@@ -103,6 +105,7 @@ function App() {
 
 
                   <Customer
+                    stateRefresh={stateRefresh}
                     key={c.id}
                     id={c.id}
                     image={c.image}

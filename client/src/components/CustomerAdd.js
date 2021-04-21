@@ -3,7 +3,7 @@ import Axios,{post} from 'axios'
 import { Typography, Button, Form, message, Input, Icon} from 'antd';
 
 
-function CustomerAdd() {
+function CustomerAdd(props) {
 
     const [info, setInfo] = useState([{
         file : null,
@@ -38,6 +38,7 @@ function CustomerAdd() {
         addCustomer()
         .then((response) => {
             console.log(response.data)
+            props.stateRefresh();
         })
         setInfo({
             file: null,
@@ -47,6 +48,8 @@ function CustomerAdd() {
             ,job : '',
             fileName :''
         })
+
+       
         
       
     }
