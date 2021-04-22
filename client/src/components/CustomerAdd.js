@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 
 
+
+
 const styles = theme =>({
     hidden:{
         display : 'none'
@@ -69,7 +71,6 @@ function CustomerAdd(props) {
         
       
     }
-
     function handleFileChange(e) {
         const {name, value} = e.target;
         setInfo({
@@ -78,10 +79,9 @@ function CustomerAdd(props) {
             [fileName]: value
         })
         
-        console.log(name, value);
-        console.log(e.target.files[0])
-    }
 
+       console.log(value)
+    }
 
 
     const handleValueChange=(e)=>{
@@ -117,14 +117,14 @@ const handleClose =() => {
 
     const {classes } = props;
 
-    console.log(info.open)
+   console.log(info)
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>고객추가하기 </Button>
             <Dialog open={info.open} onClose={handleClose}>
                 <DialogTitle>고객추가</DialogTitle>
                 <DialogContent>
-                <input className={classes.hidden} accept="image/*" id="raised-button-file" type="file"  file={file} value={fileName} onChange={handleFileChange} /><br />
+                <input className={classes.hidden} accept="image/*" id="raised-button-file" type="file" name="file"  file={file} value={fileName} onChange={handleFileChange} /><br />
                   <label htmlFor="raised-button-file">
                         <Button variant="contained" color="primary" component="span" name="file">
                             {info.fileName=== "" ? "프로필 이미지 선택" : info.fileName }

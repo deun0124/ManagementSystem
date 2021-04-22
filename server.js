@@ -29,9 +29,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.use('/image', express.static('./upload'));
+
+
 app.post('/api/customers', upload.single('image'),(req, res)=>{
+
+  console.log("파일명" + req.file);
   let sql='insert into customer values(null,?,?,?,?,?,now(),0)';
-  let image='http://localhost:5000/image'+req.file.fileName;
+  let image='http://localhost:5000/image'+req.file.filename;
   let name =req.body.name;
   let birthday =req.body.birthday;
   let gender =req.body.gender;
